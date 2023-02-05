@@ -36,7 +36,7 @@ public class Dict {
     @TableField("update_time")
     private Date updateTime;
 
-    @ApiModelProperty(value = "逻辑删除(1:已删除，0:未删除)")
+    @ApiModelProperty(value = "逻辑删除(0:未删除,1:已删除)")
     @TableLogic
     @TableField("is_deleted")
     private Integer isDeleted;
