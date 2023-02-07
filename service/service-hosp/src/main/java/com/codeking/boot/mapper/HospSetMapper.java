@@ -9,5 +9,5 @@ import org.apache.ibatis.annotations.Mapper;
  * @create : 2023/1/30 23:07
  */
 @Mapper
-public interface HospitalSetMapper extends BaseMapper<HospitalSet> {
+public interface HospSetMapper extends BaseMapper<HospitalSet> {
 }

@@ -10,4 +10,10 @@ import org.springframework.stereotype.Service;
  */
 
 public interface HospitalSetService extends IService<HospitalSet> {
+    /**
+     * 获取签名key
+     * @param hoscode
+     * @return hospitalSet.getSignKey()
+     */
+    String getSignKey(String hoscode);
 }
