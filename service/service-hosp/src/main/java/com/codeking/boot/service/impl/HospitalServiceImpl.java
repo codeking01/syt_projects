@@ -74,14 +74,13 @@ public class HospitalServiceImpl implements HospitalService {
         return hospital;
     }
 
-    private void verifyHoscodeAndSignKey(Map<String, Object> paramMap) {
+    public void verifyHoscodeAndSignKey(Map<String, Object> paramMap) {
         //必须参数校验 略
         String hoscode = (String) paramMap.get("hoscode");
         if (StringUtils.isEmpty(hoscode)) {
             throw new YyghException(ResultCodeEnum.PARAM_ERROR);
         }
         //签名校验
-
         if (!HttpRequestHelper.isSignEquals(paramMap, hospitalSetService.getSignKey(hoscode))) {
             throw new YyghException(ResultCodeEnum.SIGN_ERROR);
         }
