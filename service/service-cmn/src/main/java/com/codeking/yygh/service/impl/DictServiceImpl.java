@@ -28,7 +28,7 @@ import java.util.List;
 public class DictServiceImpl extends ServiceImpl<DictMapper, Dict> implements DictService {
     //根据数据id查询子数据列表
     @Override
-    @Cacheable(value = "dict",keyGenerator = "keyGenerator")
+    @Cacheable(value = "dict", keyGenerator = "keyGenerator")
     public List<Dict> findChlidData(Long id) {
         QueryWrapper<Dict> wrapper = new QueryWrapper<>();
         wrapper.eq("parent_id", id);
@@ -69,9 +69,10 @@ public class DictServiceImpl extends ServiceImpl<DictMapper, Dict> implements Di
     /**
      * 导入
      * allEntries = true: 方法调用后清空所有缓存
+     *
      * @param file
      */
-    @CacheEvict(value = "dict", allEntries=true)
+    @CacheEvict(value = "dict", allEntries = true)
     @Override
     public void importDictData(MultipartFile file) {
         try {
@@ -79,6 +80,13 @@ public class DictServiceImpl extends ServiceImpl<DictMapper, Dict> implements Di
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Cacheable(value = "dict", keyGenerator = "keyGenerator")
+    @Override
+    public String getNameByParentDictCodeAndValue(String parentDictCode, String value) {
+        //todo 还没写
+        return parentDictCode;
     }
 
 

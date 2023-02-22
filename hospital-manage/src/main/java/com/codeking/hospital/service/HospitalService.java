@@ -24,5 +24,4 @@ public interface HospitalService {
      */
     void updateCancelStatus(Map<String, Object> paramMap);
 
-
 }

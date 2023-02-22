@@ -8,8 +8,11 @@ import com.codeking.yygh.common.exception.YyghException;
 import com.codeking.yygh.common.helper.HttpRequestHelper;
 import com.codeking.yygh.common.result.ResultCodeEnum;
 import com.codeking.yygh.model.hosp.Hospital;
+import com.codeking.yygh.vo.hosp.HospitalQueryVo;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -36,8 +39,8 @@ public class HospitalServiceImpl implements HospitalService {
         //校验hoscode 验证签名
         verifyHoscodeAndSignKey(paramMap);
         //传输过程中“+”转换为了“ ”，因此我们要转换回来
-        String logoDataString = (String)paramMap.get("logoData");
-        if(!StringUtils.isEmpty(logoDataString)) {
+        String logoDataString = (String) paramMap.get("logoData");
+        if (!StringUtils.isEmpty(logoDataString)) {
             String logoData = logoDataString.replaceAll("", "+");
             paramMap.put("logoData", logoData);
         }
@@ -72,6 +75,24 @@ public class HospitalServiceImpl implements HospitalService {
         verifyHoscodeAndSignKey(paramMap);
         Hospital hospital = getByHoscode((String) paramMap.get("hoscode"));
         return hospital;
+    }
+
+    @Override
+    public Page<Hospital> selectPage(Integer page, Integer limit, HospitalQueryVo hospitalQueryVo) {
+        Sort sort = Sort.by(Sort.Direction.DESC, "createTime");
+        //0为第一页
+        Pageable pageable = PageRequest.of(page - 1, limit, sort);
+        Hospital hospital = new Hospital();
+        //
+        BeanUtils.copyProperties(hospitalQueryVo, hospital);
+        //创建匹配器，即如何使用查询条件
+        ExampleMatcher matcher = ExampleMatcher.matching()
+                .withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING)//改变默认字符串匹配方式：模糊查询
+                .withIgnoreCase(true);//改变默认大小写忽略方式：忽略大小写
+        //创建实例
+        Example<Hospital> example = Example.of(hospital, matcher);
+        Page<Hospital> pages = hospitalRepository.findAll(example, pageable);
+        return pages;
     }
 
     public void verifyHoscodeAndSignKey(Map<String, Object> paramMap) {
