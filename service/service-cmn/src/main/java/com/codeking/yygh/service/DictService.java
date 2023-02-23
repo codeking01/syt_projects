@@ -30,4 +30,5 @@ public interface DictService extends IService<Dict> {
      */
     String getNameByParentDictCodeAndValue(String parentDictCode, String value);
 
+    List<Dict> findByDictCode(String dictCode);
 }

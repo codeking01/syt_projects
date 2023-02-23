@@ -4,9 +4,11 @@ import com.alibaba.fastjson.JSONObject;
 import com.codeking.boot.repositry.HospitalRepository;
 import com.codeking.boot.service.HospitalService;
 import com.codeking.boot.service.HospitalSetService;
+import com.codeking.yygh.cmn.client.DictFeignClient;
 import com.codeking.yygh.common.exception.YyghException;
 import com.codeking.yygh.common.helper.HttpRequestHelper;
 import com.codeking.yygh.common.result.ResultCodeEnum;
+import com.codeking.yygh.enums.DictEnum;
 import com.codeking.yygh.model.hosp.Hospital;
 import com.codeking.yygh.vo.hosp.HospitalQueryVo;
 import lombok.extern.log4j.Log4j2;
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -31,6 +34,8 @@ public class HospitalServiceImpl implements HospitalService {
 
     @Autowired
     private HospitalSetService hospitalSetService;
+    @Autowired
+    private DictFeignClient dictFeignClient;
 
 
     @Override
@@ -92,8 +97,57 @@ public class HospitalServiceImpl implements HospitalService {
         //创建实例
         Example<Hospital> example = Example.of(hospital, matcher);
         Page<Hospital> pages = hospitalRepository.findAll(example, pageable);
+
+        // 通过流的方式 增加数据
+        pages.getContent().stream().forEach(item -> {
+            packHospital(item);
+        });
         return pages;
     }
+
+    @Override
+    public void updateStatus(String id, Integer status) {
+        if (status.intValue() == 0 || status.intValue() == 1) {
+            Hospital hospital = hospitalRepository.findById(id).get();
+            hospital.setStatus(status);
+            hospital.setUpdateTime(new Date());
+            hospitalRepository.save(hospital);
+        }
+    }
+
+    @Override
+    public Map<String, Object> show(String id) {
+        Map<String, Object> result = new HashMap<>();
+
+        Hospital hospital = this.packHospital(this.getByHoscode(id));
+        result.put("hospital", hospital);
+
+        //单独处理更直观
+        result.put("bookingRule", hospital.getBookingRule());
+        //不需要重复返回
+        hospital.setBookingRule(null);
+        return result;
+
+    }
+
+    /**
+     * 封装数据
+     *
+     * @param hospital
+     * @return
+     */
+
+    private Hospital packHospital(Hospital hospital) {
+        String hostypeString = dictFeignClient.getName(DictEnum.HOSTYPE.getDictCode(), hospital.getHostype());
+        String provinceString = dictFeignClient.getName(hospital.getProvinceCode());
+        String cityString = dictFeignClient.getName(hospital.getCityCode());
+        String districtString = dictFeignClient.getName(hospital.getDistrictCode());
+
+        hospital.getParam().put("hostypeString", hostypeString);
+        hospital.getParam().put("fullAddress", provinceString + cityString + districtString + hospital.getAddress());
+        return hospital;
+    }
+
 
     public void verifyHoscodeAndSignKey(Map<String, Object> paramMap) {
         //必须参数校验 略
