@@ -17,6 +17,8 @@ public interface HospitalService {
      */
     Hospital getByHoscode(String hoscode);
 
+    Hospital getById(String id);
+
     Hospital search(Map<String, Object> paramMap);
     /**
      * 分页查询

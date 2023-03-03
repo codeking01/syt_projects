@@ -75,6 +75,11 @@ public class HospitalServiceImpl implements HospitalService {
     }
 
     @Override
+    public Hospital getById(String id) {
+        return hospitalRepository.getHospitalById(id);
+    }
+
+    @Override
     public Hospital search(Map<String, Object> paramMap) {
         //校验hoscode 验证签名
         verifyHoscodeAndSignKey(paramMap);
@@ -118,8 +123,7 @@ public class HospitalServiceImpl implements HospitalService {
     @Override
     public Map<String, Object> show(String id) {
         Map<String, Object> result = new HashMap<>();
-
-        Hospital hospital = this.packHospital(this.getByHoscode(id));
+        Hospital hospital = this.packHospital(this.getById(id));
         result.put("hospital", hospital);
 
         //单独处理更直观

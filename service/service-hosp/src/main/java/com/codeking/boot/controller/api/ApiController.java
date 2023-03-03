@@ -18,6 +18,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,6 +34,7 @@ import java.util.Map;
 @Api(tags = "医院管理API接口")
 @RestController
 @RequestMapping("/api/hosp")
+@CrossOrigin
 public class ApiController {
     @Autowired
     private HospitalService hospitalService;
