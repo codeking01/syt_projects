@@ -2,6 +2,7 @@ package com.codeking.boot.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.codeking.boot.repositry.HospitalRepository;
+import com.codeking.boot.service.DepartmentService;
 import com.codeking.boot.service.HospitalService;
 import com.codeking.boot.service.HospitalSetService;
 import com.codeking.yygh.cmn.client.DictFeignClient;
@@ -20,6 +21,7 @@ import org.springframework.util.StringUtils;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -36,6 +38,10 @@ public class HospitalServiceImpl implements HospitalService {
     private HospitalSetService hospitalSetService;
     @Autowired
     private DictFeignClient dictFeignClient;
+
+    @Autowired
+    private DepartmentService departmentService;
+
 
 
     @Override
@@ -147,6 +153,24 @@ public class HospitalServiceImpl implements HospitalService {
             return hospital.getHosname();
         }
         return "";
+    }
+
+    @Override
+    public List<Hospital> findByHosname(String hosname) {
+        return hospitalRepository.findHospitalByHosnameLike(hosname);
+    }
+
+    @Override
+    public Map<String, Object> item(String hoscode) {
+        Map<String, Object> result = new HashMap<>();
+        //医院详情
+        Hospital hospital = this.packHospital(this.getByHoscode(hoscode));
+        result.put("hospital", hospital);
+        //预约规则
+        result.put("bookingRule", hospital.getBookingRule());
+        //不需要重复返回
+        hospital.setBookingRule(null);
+        return result;
     }
 
     /**

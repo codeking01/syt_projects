@@ -88,7 +88,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     //根据医院编号，查询医院所有科室列表
     @Override
     public List<DepartmentVo> findDeptTree(String hoscode) {
-//创建list集合，用于最终数据封装
+        //创建list集合，用于最终数据封装
         List<DepartmentVo> result = new ArrayList<>();
 
         //根据医院编号，查询医院所有科室信息

@@ -4,6 +4,8 @@ import com.codeking.yygh.model.hosp.Hospital;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface HospitalRepository extends MongoRepository<Hospital,String> {
 
@@ -12,4 +14,6 @@ public interface HospitalRepository extends MongoRepository<Hospital,String> {
 
     // 通过id去查询
     Hospital getHospitalById(String id);
+
+    List<Hospital> findHospitalByHosnameLike(String hosname);
 }
