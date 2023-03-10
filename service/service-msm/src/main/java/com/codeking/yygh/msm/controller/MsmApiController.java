@@ -35,11 +35,10 @@ public class MsmApiController {
         //如果从redis获取不到，
         // 生成验证码，
         //code = RandomUtil.getSixBitRandom();
-        // 这个地方为了测试，直接写死
+        // 这个为了测试，直接写死
         code = "123456";
         //调用service方法，通过整合短信服务进行发送
-        //boolean isSend = msmService.send(phone, code);
-        boolean isSend = true;
+        boolean isSend = msmService.send(phone, code);
         //生成验证码放到redis里面，设置有效时间
         if (isSend) {
             redisTemplate.opsForValue().set(phone, code, 5, TimeUnit.MINUTES);

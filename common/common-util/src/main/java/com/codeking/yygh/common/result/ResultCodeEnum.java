@@ -10,6 +10,7 @@ public enum ResultCodeEnum {
 
     SUCCESS(200,"成功"),
     FAIL(201, "失败"),
+    NullError(211, "验证码失效"),
     PARAM_ERROR( 202, "参数不正确"),
     SERVICE_ERROR(203, "服务异常"),
     DATA_ERROR(204, "数据异常"),
