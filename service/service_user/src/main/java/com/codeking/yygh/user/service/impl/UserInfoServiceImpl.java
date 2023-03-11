@@ -22,6 +22,13 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
     @Autowired
     private RedisTemplate redisTemplate;
 
+    @Autowired
+    private UserInfoMapper userInfoMapper;
+
+    @Autowired
+    private UserInfoService userInfoService;
+
+
     @Override
     public Map<String, Object> login(LoginVo loginVo) {
         String phone = loginVo.getPhone();
@@ -39,24 +46,39 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
         if (!code.equals(mobileCode)) {
             throw new YyghException(ResultCodeEnum.CODE_ERROR);
         }
-        //手机号已被使用
-        QueryWrapper<UserInfo> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("phone", phone);
-        //获取会员
-        UserInfo userInfo = baseMapper.selectOne(queryWrapper);
-        if (null == userInfo) {
-            userInfo = new UserInfo();
-            userInfo.setName("");
-            userInfo.setPhone(phone);
-            userInfo.setStatus(1);
-            this.save(userInfo);
+        //绑定手机号码
+        UserInfo userInfo = null;
+        if(!StringUtils.isEmpty(loginVo.getOpenid())) {
+            userInfo = this.getByOpenid(loginVo.getOpenid());
+            if(null != userInfo) {
+                userInfo.setPhone(loginVo.getPhone());
+                this.updateById(userInfo);
+            } else {
+                throw new YyghException(ResultCodeEnum.DATA_ERROR);
+            }
         }
+        //userInfo=null 说明手机直接登录
+        if(null == userInfo) {
+            //手机号已被使用
+            QueryWrapper<UserInfo> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("phone", phone);
+            //获取会员
+            userInfo = baseMapper.selectOne(queryWrapper);
+            if (null == userInfo) {
+                userInfo = new UserInfo();
+                userInfo.setName("");
+                userInfo.setPhone(phone);
+                userInfo.setStatus(1);
+                this.save(userInfo);
+            }
+        }
+
         //校验是否被禁用
         if (userInfo.getStatus() == 0) {
             throw new YyghException(ResultCodeEnum.LOGIN_DISABLED_ERROR);
         }
-
         //TODO 记录登录
+
 
         //返回页面显示名称
         Map<String, Object> map = new HashMap<>();
@@ -73,4 +95,10 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
         map.put("token", token);
         return map;
     }
+
+    @Override
+    public UserInfo getByOpenid(String openid) {
+        return userInfoMapper.selectOne(new QueryWrapper<UserInfo>().eq("openid", openid));
+    }
+
 }
