@@ -1,4 +1,4 @@
-package com.codeking.yygh.user.controller;
+package com.codeking.yygh.user.controller.api;
 
 import com.alibaba.fastjson.JSONObject;
 import com.codeking.yygh.common.exception.YyghException;
