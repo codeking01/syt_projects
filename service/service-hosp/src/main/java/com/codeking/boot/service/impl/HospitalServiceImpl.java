@@ -8,6 +8,7 @@ import com.codeking.boot.service.HospitalSetService;
 import com.codeking.yygh.cmn.client.DictFeignClient;
 import com.codeking.yygh.common.exception.YyghException;
 import com.codeking.yygh.common.helper.HttpRequestHelper;
+import com.codeking.yygh.common.result.Result;
 import com.codeking.yygh.common.result.ResultCodeEnum;
 import com.codeking.yygh.enums.DictEnum;
 import com.codeking.yygh.model.hosp.Hospital;

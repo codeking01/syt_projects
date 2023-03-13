@@ -2,6 +2,7 @@ package com.codeking.boot.controller.api;
 
 import com.codeking.boot.service.DepartmentService;
 import com.codeking.boot.service.HospitalService;
+import com.codeking.boot.service.ScheduleService;
 import com.codeking.yygh.common.result.Result;
 import com.codeking.yygh.model.hosp.Hospital;
 import com.codeking.yygh.vo.hosp.HospitalQueryVo;
@@ -26,6 +27,9 @@ public class HospitalApiController {
     @Autowired
     private DepartmentService departmentService;
 
+    @Autowired
+    private ScheduleService scheduleService;
+
     @ApiOperation(value = "获取分页列表")
     @GetMapping("{page}/{limit}")
     public Result index(
@@ -45,6 +49,7 @@ public class HospitalApiController {
             @PathVariable String hosname) {
         return Result.ok(hospitalService.findByHosname(hosname));
     }
+
     @ApiOperation(value = "获取科室列表")
     @GetMapping("department/{hoscode}")
     public Result index(
@@ -59,6 +64,40 @@ public class HospitalApiController {
             @ApiParam(name = "hoscode", value = "医院code", required = true)
             @PathVariable String hoscode) {
         return Result.ok(hospitalService.item(hoscode));
+    }
+
+    @ApiOperation(value = "获取可预约排班数据")
+    @GetMapping("auth/getBookingScheduleRule/{page}/{limit}/{hoscode}/{depcode}")
+    public Result getBookingSchedule(
+            @ApiParam(name = "page", value = "当前页码", required = true)
+            @PathVariable Integer page,
+            @ApiParam(name = "limit", value = "每页记录数", required = true)
+            @PathVariable Integer limit,
+            @ApiParam(name = "hoscode", value = "医院code", required = true)
+            @PathVariable String hoscode,
+            @ApiParam(name = "depcode", value = "科室code", required = true)
+            @PathVariable String depcode) {
+        return Result.ok(scheduleService.getBookingScheduleRule(page, limit, hoscode, depcode));
+    }
+
+    @ApiOperation(value = "获取排班数据")
+    @GetMapping("auth/findScheduleList/{hoscode}/{depcode}/{workDate}")
+    public Result findScheduleList(
+            @ApiParam(name = "hoscode", value = "医院code", required = true)
+            @PathVariable String hoscode,
+            @ApiParam(name = "depcode", value = "科室code", required = true)
+            @PathVariable String depcode,
+            @ApiParam(name = "workDate", value = "排班日期", required = true)
+            @PathVariable String workDate) {
+        return Result.ok(scheduleService.getDetailSchedule(hoscode, depcode, workDate));
+    }
+
+    @ApiOperation(value = "根据排班id获取排班数据")
+    @GetMapping("getSchedule/{scheduleId}")
+    public Result getSchedule(
+            @ApiParam(name = "scheduleId", value = "排班id", required = true)
+            @PathVariable String scheduleId) {
+        return Result.ok(scheduleService.getById(scheduleId));
     }
 
 }

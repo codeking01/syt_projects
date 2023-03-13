@@ -150,4 +150,9 @@ public class DepartmentServiceImpl implements DepartmentService {
             throw new YyghException(ResultCodeEnum.SIGN_ERROR);
         }
     }
+    @Override
+    public Department getDepartment(String hoscode, String depcode) {
+        return departmentRepository.getDepartmentByHoscodeAndDepcode(hoscode, depcode);
+    }
+
 }
