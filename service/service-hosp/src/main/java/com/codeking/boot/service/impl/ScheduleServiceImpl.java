@@ -1,7 +1,10 @@
 package com.codeking.boot.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.codeking.boot.mapper.ScheduleMapper;
 import com.codeking.boot.repositry.DepartmentRepository;
 import com.codeking.boot.repositry.ScheduleRepository;
 import com.codeking.boot.service.DepartmentService;
@@ -14,6 +17,7 @@ import com.codeking.yygh.model.hosp.Department;
 import com.codeking.yygh.model.hosp.Hospital;
 import com.codeking.yygh.model.hosp.Schedule;
 import com.codeking.yygh.vo.hosp.BookingScheduleRuleVo;
+import com.codeking.yygh.vo.hosp.ScheduleOrderVo;
 import com.codeking.yygh.vo.hosp.ScheduleQueryVo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.beanutils.BeanUtils;
@@ -39,7 +43,7 @@ import java.util.stream.Collectors;
  */
 @Service
 @Slf4j
-public class ScheduleServiceImpl implements ScheduleService {
+public class ScheduleServiceImpl extends ServiceImpl<ScheduleMapper, Schedule> implements ScheduleService {
     @Autowired
     private ScheduleRepository scheduleRepository;
 
@@ -274,10 +278,71 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     @Override
-    public Schedule getById(String id) {
+    public Schedule getScheduleById(String id) {
+        // 这个其实需要判断非空的，可能存在空指针
         Schedule schedule = scheduleRepository.findById(id).get();
         return this.packageSchedule(schedule);
     }
+
+
+    //根据排班id获取预约下单数据
+    @Override
+    public ScheduleOrderVo getScheduleOrderVo(String scheduleId) {
+        ScheduleOrderVo scheduleOrderVo = new ScheduleOrderVo();
+        //排班信息,这个得去mongodb数据库中查询，因为这个数据表是在hosp_manage里面的。这个地方我感觉可以直接调用那边hosp_manage的接口
+        Schedule schedule = this.getScheduleById(scheduleId);
+        if (null == schedule) {
+            throw new YyghException(ResultCodeEnum.PARAM_ERROR);
+        }
+
+        //获取预约规则信息
+        Hospital hospital = hospitalService.getByHoscode(schedule.getHoscode());
+        if (null == hospital) {
+            throw new YyghException(ResultCodeEnum.DATA_ERROR);
+        }
+        BookingRule bookingRule = hospital.getBookingRule();
+        if (null == bookingRule) {
+            throw new YyghException(ResultCodeEnum.PARAM_ERROR);
+        }
+
+        scheduleOrderVo.setHoscode(schedule.getHoscode());
+        scheduleOrderVo.setHosname(hospitalService.getHospName(schedule.getHoscode()));
+        scheduleOrderVo.setDepcode(schedule.getDepcode());
+        scheduleOrderVo.setDepname(departmentService.getDepName(schedule.getHoscode(), schedule.getDepcode()));
+        scheduleOrderVo.setHosScheduleId(schedule.getHosScheduleId());
+        scheduleOrderVo.setAvailableNumber(schedule.getAvailableNumber());
+        scheduleOrderVo.setTitle(schedule.getTitle());
+        scheduleOrderVo.setReserveDate(schedule.getWorkDate());
+        scheduleOrderVo.setReserveTime(schedule.getWorkTime());
+        scheduleOrderVo.setAmount(schedule.getAmount());
+
+        //退号截止天数（如：就诊前一天为-1，当天为0）
+        int quitDay = bookingRule.getQuitDay();
+        DateTime quitTime = this.getDateTime(new DateTime(schedule.getWorkDate()).plusDays(quitDay).toDate(), bookingRule.getQuitTime());
+        scheduleOrderVo.setQuitTime(quitTime.toDate());
+
+        //预约开始时间
+        DateTime startTime = this.getDateTime(new Date(), bookingRule.getReleaseTime());
+        scheduleOrderVo.setStartTime(startTime.toDate());
+
+        //预约截止时间
+        DateTime endTime = this.getDateTime(new DateTime().plusDays(bookingRule.getCycle()).toDate(), bookingRule.getStopTime());
+        scheduleOrderVo.setEndTime(endTime.toDate());
+
+        //当天停止挂号时间
+        DateTime stopTime = this.getDateTime(new Date(), bookingRule.getStopTime());
+        scheduleOrderVo.setStartTime(startTime.toDate());
+        return scheduleOrderVo;
+    }
+
+    @Override
+    public void update(Schedule schedule) {
+        schedule.setUpdateTime(new Date());
+        //主键一致就是更新
+        scheduleRepository.save(schedule);
+    }
+
+
 
     /**
      * 获取可预约日期分页数据
@@ -365,6 +430,4 @@ public class ScheduleServiceImpl implements ScheduleService {
         }
         return dayOfWeek;
     }
-
-
 }

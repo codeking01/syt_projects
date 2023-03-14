@@ -50,9 +50,9 @@ public class HttpRequestHelper {
             str.append(param.getValue()).append("|");
         }
         str.append(signKey);
-        log.info("加密前：" + signKey.toString());
+        log.info("在hospital-manage:加密前：" + signKey.toString());
         String md5Str = MD5.encrypt(signKey.toString());
-        log.info("加密后：" + md5Str);
+        log.info("hospital-manage:加密后：" + md5Str);
         return md5Str;
     }
 

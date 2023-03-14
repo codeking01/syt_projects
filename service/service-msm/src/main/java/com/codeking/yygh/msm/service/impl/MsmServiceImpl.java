@@ -3,13 +3,11 @@ package com.codeking.yygh.msm.service.impl;
 import com.codeking.yygh.msm.config.ConstantPropertiesUtils;
 import com.codeking.yygh.msm.service.MsmService;
 import com.codeking.yygh.msm.utils.mailUtil;
+import com.codeking.yygh.vo.msm.MsmVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @Service
 public class MsmServiceImpl implements MsmService {
@@ -34,4 +32,14 @@ public class MsmServiceImpl implements MsmService {
         }
         return true;
     }
+
+    @Override
+    public boolean send(MsmVo msmVo) {
+        if (!StringUtils.isEmpty(msmVo.getPhone())) {
+            String code = (String) msmVo.getParam().get("code");
+            return this.send(msmVo.getPhone(), code);
+        }
+        return false;
+    }
+
 }

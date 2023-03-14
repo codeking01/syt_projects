@@ -2,6 +2,7 @@ package com.codeking.boot.service;
 
 import com.codeking.yygh.model.hosp.Department;
 import com.codeking.yygh.model.hosp.Schedule;
+import com.codeking.yygh.vo.hosp.ScheduleOrderVo;
 import com.codeking.yygh.vo.hosp.ScheduleQueryVo;
 import org.springframework.data.domain.Page;
 
@@ -62,6 +63,13 @@ public interface ScheduleService {
      * @param id
      * @return
      */
-    Schedule getById(String id);
+    Schedule getScheduleById(String id);
+
+    //根据排班id获取预约下单数据
+    ScheduleOrderVo getScheduleOrderVo(String scheduleId);
+    /**
+     * 修改排班
+     */
+    void update(Schedule schedule);
 
 }
