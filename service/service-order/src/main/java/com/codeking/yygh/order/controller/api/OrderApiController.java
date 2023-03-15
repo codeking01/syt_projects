@@ -7,6 +7,7 @@ import com.codeking.yygh.common.utils.AuthContextHolder;
 import com.codeking.yygh.enums.OrderStatusEnum;
 import com.codeking.yygh.model.order.OrderInfo;
 import com.codeking.yygh.order.service.OrderService;
+import com.codeking.yygh.vo.order.OrderCountQueryVo;
 import com.codeking.yygh.vo.order.OrderQueryVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 @Api(tags = "订单接口")
 @RestController
@@ -75,4 +77,11 @@ public class OrderApiController {
             @PathVariable("orderId") Long orderId) {
         return Result.ok(orderService.cancelOrder(orderId));
     }
+
+    @ApiOperation(value = "获取订单统计数据")
+    @PostMapping("inner/getCountMap")
+    public Map<String, Object> getCountMap(@RequestBody OrderCountQueryVo orderCountQueryVo) {
+        return orderService.getCountMap(orderCountQueryVo);
+    }
+
 }
