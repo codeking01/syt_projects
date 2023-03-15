@@ -18,7 +18,7 @@ public interface OrderService extends IService<OrderInfo> {
     IPage<OrderInfo> selectPage(Page<OrderInfo> pageParam, OrderQueryVo orderQueryVo);
 
     /**
-     * 获取订单详情
+     * 获取订单详情,根据user_id去查询
      */
     OrderInfo getOrderInfo(Long id);
     OrderInfo getOrderById(Long id);
@@ -30,5 +30,10 @@ public interface OrderService extends IService<OrderInfo> {
      */
     Map<String,Object> show(Long orderId);
 
+    /**
+     * 取消订单
+     * @param orderId
+     */
+    Boolean cancelOrder(Long orderId);
 
 }
