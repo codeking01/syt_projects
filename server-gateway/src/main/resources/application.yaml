@@ -1,0 +1,10 @@
+localAddress: 192.168.168.177
+spring:
+  cloud:
+    sentinel:
+      transport:
+        clientIp: ${localAddress}
+        dashboard: ${ipAddress}:8858
+      eager: true
+      log:
+        dir: logs/sentinel

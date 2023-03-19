@@ -480,3 +480,49 @@
 2023-03-19 20:37:41.923 INFO Receiving rule change (type: flow): [{"clusterConfig":{"fallbackToLocalWhenFail":true,"sampleCount":10,"strategy":0,"thresholdType":0,"windowIntervalMs":1000},"clusterMode":false,"controlBehavior":0,"count":1.0,"grade":1,"limitApp":"default","maxQueueingTimeMs":500,"resource":"/sentinel/demo1","strategy":0,"warmUpPeriodSec":10}]
 2023-03-19 20:37:41.931 INFO [DynamicSentinelProperty] Config will be updated to: [FlowRule{resource=/sentinel/demo1, limitApp=default, grade=1, count=1.0, strategy=0, refResource=null, controlBehavior=0, warmUpPeriodSec=10, maxQueueingTimeMs=500, clusterMode=false, clusterConfig=ClusterFlowConfig{flowId=null, thresholdType=0, fallbackToLocalWhenFail=true, strategy=0, sampleCount=10, windowIntervalMs=1000}, controller=null}]
 2023-03-19 20:37:41.932 INFO [FlowRuleManager] Flow rules received: {/sentinel/demo1=[FlowRule{resource=/sentinel/demo1, limitApp=default, grade=1, count=1.0, strategy=0, refResource=null, controlBehavior=0, warmUpPeriodSec=10, maxQueueingTimeMs=500, clusterMode=false, clusterConfig=ClusterFlowConfig{flowId=null, thresholdType=0, fallbackToLocalWhenFail=true, strategy=0, sampleCount=10, windowIntervalMs=1000}, controller=com.alibaba.csp.sentinel.slots.block.flow.controller.DefaultController@6d7f452f}]}
+2023-03-19 20:57:16.589 INFO App name resolved: service-gateway
+2023-03-19 20:57:16.590 INFO [SentinelConfig] Application type resolved: 0
+2023-03-19 20:57:16.592 INFO [InitExecutor] Found init func: com.alibaba.csp.sentinel.transport.init.CommandCenterInitFunc
+2023-03-19 20:57:16.595 INFO [InitExecutor] Found init func: com.alibaba.csp.sentinel.transport.init.HeartbeatSenderInitFunc
+2023-03-19 20:57:16.597 INFO [InitExecutor] Found init func: com.alibaba.csp.sentinel.metric.extension.MetricCallbackInit
+2023-03-19 20:57:16.598 INFO [InitExecutor] Found init func: com.alibaba.csp.sentinel.init.ParamFlowStatisticSlotCallbackInit
+2023-03-19 20:57:16.600 INFO [InitExecutor] Found init func: com.alibaba.csp.sentinel.cluster.server.init.DefaultClusterServerInitFunc
+2023-03-19 20:57:16.601 INFO [InitExecutor] Found init func: com.alibaba.csp.sentinel.cluster.client.init.DefaultClusterClientInitFunc
+2023-03-19 20:57:16.616 INFO [SpiLoader] Found CommandCenter SPI: com.alibaba.csp.sentinel.transport.command.SimpleHttpCommandCenter with order 2147483647
+2023-03-19 20:57:16.617 INFO [CommandCenterProvider] CommandCenter resolved: com.alibaba.csp.sentinel.transport.command.SimpleHttpCommandCenter
+2023-03-19 20:57:16.646 INFO [CommandCenterInit] Starting command center: com.alibaba.csp.sentinel.transport.command.SimpleHttpCommandCenter
+2023-03-19 20:57:16.646 INFO [InitExecutor] Executing com.alibaba.csp.sentinel.transport.init.CommandCenterInitFunc with order -1
+2023-03-19 20:57:16.654 INFO [SimpleHttpHeartbeatSender] Default console address list retrieved: [/192.168.168.251:8858]
+2023-03-19 20:57:16.655 INFO [SpiLoader] Found HeartbeatSender SPI: com.alibaba.csp.sentinel.transport.heartbeat.SimpleHttpHeartbeatSender with order 2147483647
+2023-03-19 20:57:16.655 INFO [HeartbeatSenderProvider] HeartbeatSender activated: com.alibaba.csp.sentinel.transport.heartbeat.SimpleHttpHeartbeatSender
+2023-03-19 20:57:16.656 INFO [HeartbeatSenderInit] Heartbeat interval not configured in config property or invalid, using sender default: 10000
+2023-03-19 20:57:16.657 INFO [HeartbeatSenderInit] HeartbeatSender started: com.alibaba.csp.sentinel.transport.heartbeat.SimpleHttpHeartbeatSender
+2023-03-19 20:57:16.658 INFO [InitExecutor] Executing com.alibaba.csp.sentinel.transport.init.HeartbeatSenderInitFunc with order -1
+2023-03-19 20:57:16.665 INFO [InitExecutor] Executing com.alibaba.csp.sentinel.cluster.client.init.DefaultClusterClientInitFunc with order 0
+2023-03-19 20:57:16.669 INFO [InitExecutor] Executing com.alibaba.csp.sentinel.metric.extension.MetricCallbackInit with order 2147483647
+2023-03-19 20:57:16.671 INFO [InitExecutor] Executing com.alibaba.csp.sentinel.init.ParamFlowStatisticSlotCallbackInit with order 2147483647
+2023-03-19 20:57:16.683 INFO [TokenServiceProvider] Global token service resolved: com.alibaba.csp.sentinel.cluster.flow.DefaultTokenService
+2023-03-19 20:57:16.683 INFO [DefaultClusterServerInitFunc] Default entity codec and processors registered
+2023-03-19 20:57:16.684 INFO [InitExecutor] Executing com.alibaba.csp.sentinel.cluster.server.init.DefaultClusterServerInitFunc with order 2147483647
+2023-03-19 20:57:31.179 INFO [SystemRuleManager] Current system check status: false, highestSystemLoad: 1.797693e+308, highestCpuUsage: 1.797693e+308, maxRt: 9223372036854775807, maxThread: 9223372036854775807, maxQps: 1.797693e+308
+2023-03-19 20:59:33.630 INFO [FlowRuleManager] Flow rules loaded: {}
+2023-03-19 20:59:33.633 INFO [MetricWriter] Creating new MetricWriter, singleFileSize=52428800, totalFileCount=6
+2023-03-19 21:01:20.335 INFO Add child <sentinel_default_context> to node <machine-root>
+2023-03-19 21:01:20.337 INFO Add child </api/hosp/hospital/1000_0> to node <machine-root>
+2023-03-19 21:01:20.337 INFO Add child </api/hosp/hospital/department/1000_0> to node <machine-root>
+2023-03-19 21:01:20.359 INFO [SlotChainProvider] Global slot chain builder resolved: com.alibaba.csp.sentinel.slots.HotParamSlotChainBuilder
+2023-03-19 21:01:20.376 INFO Add child </api/hosp/hospital/1000_0> to node </api/hosp/hospital/1000_0>
+2023-03-19 21:01:20.376 INFO Add child </api/hosp/hospital/department/1000_0> to node </api/hosp/hospital/department/1000_0>
+2023-03-19 21:01:20.384 INFO [ParamFlowRuleManager] No parameter flow rules, clearing all parameter metrics
+2023-03-19 21:01:20.384 INFO [ParamFlowRuleManager] Parameter flow rules received: {}
+2023-03-19 21:01:20.387 INFO [AuthorityRuleManager] Load authority rules: {}
+2023-03-19 21:01:20.391 INFO [DegradeRuleManager] Degrade rules loaded: {}
+2023-03-19 21:01:20.395 INFO [MetricExtensionProvider] MetricExtension resolved, size=0
+2023-03-19 21:01:21.648 INFO [MetricWriter] New metric file created: logs/sentinel\service-gateway-metrics.log.2023-03-19
+2023-03-19 21:01:21.651 INFO [MetricWriter] New metric index file created: logs/sentinel\service-gateway-metrics.log.2023-03-19.idx
+2023-03-19 21:01:21.826 INFO Add child </api/hosp/hospital/1/10> to node <machine-root>
+2023-03-19 21:01:21.827 INFO Add child </api/hosp/hospital/1/10> to node </api/hosp/hospital/1/10>
+2023-03-19 21:01:38.368 INFO Add child </admin/cmn/dict/findByDictCode/Hostype> to node <machine-root>
+2023-03-19 21:01:38.368 INFO Add child </admin/cmn/dict/findByDictCode/Hostype> to node </admin/cmn/dict/findByDictCode/Hostype>
+2023-03-19 21:01:38.368 INFO Add child </admin/cmn/dict/findByDictCode/Beijin> to node <machine-root>
+2023-03-19 21:01:38.369 INFO Add child </admin/cmn/dict/findByDictCode/Beijin> to node </admin/cmn/dict/findByDictCode/Beijin>
