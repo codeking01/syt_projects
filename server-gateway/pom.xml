@@ -35,6 +35,18 @@
             <artifactId>common-util</artifactId>
             <version>1.0</version>
         </dependency>
+
+        <!-- &lt;!&ndash; 2.1.6之后自动配置了 &ndash;&gt; -->
+        <!-- <dependency> -->
+        <!--     <groupId>com.alibaba.cloud</groupId> -->
+        <!--     <artifactId>spring-cloud-alibaba-sentinel-gateway</artifactId> -->
+        <!-- </dependency> -->
+        <!-- &lt;!&ndash; sentinel引入 &ndash;&gt; -->
+        <!-- <dependency> -->
+        <!--     <groupId>com.alibaba.cloud</groupId> -->
+        <!--     <artifactId>spring-cloud-starter-alibaba-sentinel</artifactId> -->
+        <!-- </dependency> -->
+
     </dependencies>
 
 </project>

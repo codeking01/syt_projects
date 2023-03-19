@@ -1,0 +1,6 @@
+spring:
+  cloud:
+    sentinel:
+      transport:
+        port: 8719 # 服务的数据发送
+        dashboard: =${ipAddress}:8858 # 控制台的地址
